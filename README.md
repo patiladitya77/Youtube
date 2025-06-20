@@ -1,0 +1,3 @@
+- install vite
+- install tailwind
+- initialse project
