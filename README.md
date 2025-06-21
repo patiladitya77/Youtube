@@ -3,3 +3,5 @@
 - initialse project
 - Header
 - sidebar
+- npm i @reduxjs/toolkit
+- npm i react-redux
