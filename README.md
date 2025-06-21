@@ -1,3 +1,5 @@
 - install vite
 - install tailwind
 - initialse project
+- Header
+- sidebar
