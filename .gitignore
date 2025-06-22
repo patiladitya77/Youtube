@@ -12,6 +12,7 @@ dist
 dist-ssr
 *.local
 constants.js
+notes.md
 
 # Editor directories and files
 .vscode/*

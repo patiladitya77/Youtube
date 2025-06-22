@@ -1,7 +1,28 @@
 import { useDispatch } from "react-redux";
 import { toggleMenu } from "../utils/appSlice";
+import { useEffect, useState } from "react";
+import { YOUTUBE_SEARCH_SUGGESTIONS_API } from "../utils/constants";
 
 const Head = () => {
+  const [searchQuery, setSearchQuery] = useState("");
+  const [suggestions, setSuggestions] = useState([]);
+  const [showSuggestions, setShowSuggestions] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => getSearchSuggestions(), 200);
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [searchQuery]);
+
+  const getSearchSuggestions = async () => {
+    const data = await fetch(YOUTUBE_SEARCH_SUGGESTIONS_API + searchQuery);
+    const json = await data.json();
+    console.log(json[1]);
+    setSuggestions(json[1]);
+  };
+
   const dispatch = useDispatch();
   const handleMenu = () => {
     dispatch(toggleMenu());
@@ -22,13 +43,28 @@ const Head = () => {
         />
       </div>
       <div className="col-span-10 p-2 mt-2">
-        <input
-          className="w-1/2 p-2 mb-2 border border-gray-400 rounded-l-full"
-          type="text"
-        />
-        <button className="border border-gray-400 p-2 rounded-r-full">
-          Search
-        </button>
+        <div>
+          <input
+            className="px-5 w-1/2 p-2 mb-2 border border-gray-400 rounded-l-full"
+            type="text"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            onFocus={() => setShowSuggestions(true)}
+            onBlur={() => setShowSuggestions(false)}
+          />
+          <button className="border border-gray-400 p-2 rounded-r-full">
+            Search
+          </button>
+        </div>
+        {showSuggestions && (
+          <div className="fixed bg-white py-2 px-5 w-[31rem] rounded-lg shadow-lg border border-gray-100">
+            <ul>
+              {suggestions.map((s) => (
+                <li className="hover:bg-gray-50">{s}</li>
+              ))}
+            </ul>
+          </div>
+        )}
       </div>
       <div className="col-span-1 m-2 px-10">
         <img
